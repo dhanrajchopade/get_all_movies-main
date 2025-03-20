@@ -19,6 +19,29 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+
+// Remove Movie
+
+async function deleteMovie(movieId){
+ try{
+  const deletedMovie = await Movie.findByIdAndDelete(movieId)
+  return deletedMovie
+ }
+ catch(error){
+  console.log(error)
+ }
+}
+
+app.delete("/movies/:movieId", async (req,res) =>{
+ try{
+const deletedMovie = await deleteMovie(req.params.movieId)
+  if(deletedMovie){
+res.status(200).json({message:"Movie deleted successfully"})
+  }
+ }catch(error){
+ res.status(500).json({error:"Failed to delete movie."})
+ }
+})
  // Create a new movie
 app.post("/movies", async (req, res) => {
   try {
